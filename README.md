@@ -1,4 +1,4 @@
-# NodeMCU Tabanlı I2C Multi-Sensör ve LCD Kontrol Sistemi
+# LADA DC PANEL
 
 Bu proje, Lada Samara aracım için geliştirdiğim kontrol sistemidir. Farklı I2C cihazlarını, çevresel sensörleri ve bir LCD ekranı bir araya getirerek, kullanımı kolay ve etkili bir menü sisteminde sunduğum bu yapıyı oluşturduğumda amacım, pratik ve güvenilir bir çözüm elde etmekti.
 
