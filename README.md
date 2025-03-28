@@ -1,7 +1,6 @@
-# NodeMCU I2C Multi-Sensör & LCD Kontrol Sistemi
+# NodeMCU Tabanlı I2C Multi-Sensör ve LCD Kontrol Sistemi
 
-Bu proje, Lada Samara aracınızın radyo kısmına yerleştirilecek yenilikçi bir kontrol sistemidir.
-Sistem, çeşitli I2C bileşenleri ve çevresel sensörlerin yanı sıra, kullanımı sezgisel bir menü arayüzü sunar. İlk açılışta hotspot olarak çalışır ve dahili WiFi Manager sayesinde kablosuz ağ ayarlarını kolayca yapabilirsiniz.
+Bu proje, Lada Samara aracım için geliştirdiğim kontrol sistemidir. Farklı I2C cihazlarını, çevresel sensörleri ve bir LCD ekranı bir araya getirerek, kullanımı kolay ve etkili bir menü sisteminde sunduğum bu yapıyı oluşturduğumda amacım, pratik ve güvenilir bir çözüm elde etmekti.
 
 ## İçindekiler
 
@@ -15,19 +14,19 @@ Sistem, çeşitli I2C bileşenleri ve çevresel sensörlerin yanı sıra, kullan
 ## Özellikler
 
 - **Çoklu I2C Cihaz Desteği:**  
-  - 16x2 LCD ekran, DS1307 RTC ve ADXL345 ivmeölçer aynı I2C hattında çalışır.
+  - 16x2 LCD ekran, DS1307 RTC ve ADXL345 ivmeölçerin aynı I2C hattında senkronize çalışması.
 - **Çevresel Sensörler:**  
   - DHT11 ile sıcaklık ve nem ölçümü.  
   - DS18B20 ile hassas sıcaklık ölçümü (OneWire).
 - **Kullanıcı Arayüzü:**  
-  - Potansiyometre ile sağa, sola, yukarı, aşağı menü kontrolleri.  
-  - Buton ile seçim yapma ve geri dönüş işlemleri.
+  - Potansiyometre ile yönlendirme; sağ, sol, yukarı ve aşağı hareket imkanı.  
+  - Tek buton ile seçim ve geri hareket kolaylığı.
 - **WiFi Yönetimi:**  
-  - İlk açılışta hotspot modunda çalışır, WiFi Manager sayesinde yerel ağa kolayca entegre edilir.
+  - İlk başta hotspot modunda çalışarak, dahili WiFi Manager sayesinde ağ ayarlarını yapabilme.
 - **Zaman Yönetimi:**  
-  - DS1307 RTC sayesinde otomatik saat senkronizasyonu.
+  - DS1307 RTC ile otomatik saat senkronizasyonu sağlanması.
 - **Dinamik Menü Sistemi:**  
-  - Kullanıcı dostu ve sezgisel arayüz ile kontrol imkanı.
+  - Basit ve anlaşılır arayüz ile sistem kontrolü.
 
 ## Bileşen Listesi
 
@@ -42,7 +41,7 @@ Sistem, çeşitli I2C bileşenleri ve çevresel sensörlerin yanı sıra, kullan
 
 ## Pin Bağlantıları
 
-Aşağıdaki tablo, bileşenlerin NodeMCU üzerindeki varsayılan bağlantılarını göstermektedir:
+Aşağıdaki tabloda, kullandığım bileşenlerin NodeMCU üzerindeki varsayılan bağlantıları yer almaktadır:
 
 | **Bileşen**               | **Bağlantı**         | **NodeMCU Pin (Varsayılan)**    |
 |---------------------------|----------------------|---------------------------------|
@@ -54,47 +53,47 @@ Aşağıdaki tablo, bileşenlerin NodeMCU üzerindeki varsayılan bağlantılar�
 | **Potansiyometre**        | Analog giriş         | A0                              |
 | **Buton**                 | Dijital giriş        | D7 (GPIO13)                     |
 
-> **Not:** I2C cihazlar SDA ve SCL hatlarını paylaşır. Eğer modüllerinizde gerekli pull-up dirençler yoksa, eklemeniz gerekebilir.
+> **Not:** I2C cihazlar aynı SDA ve SCL hatlarını kullandığından, modüllerde gerekli pull-up dirençlerinin olduğundan emin olunuz.
 
 ## Sistem Fonksiyonları
 
 - **Navigasyon:**  
-  Potansiyometre, menüde sağa, sola, yukarı ve aşağı hareket etmenizi sağlar. Bu sayede, menüler arasında doğal ve akıcı bir geçiş mümkün olur.
-
+  Potansiyometre ile menüde sağa, sola, yukarı ve aşağı yönlerde kolayca gezinme imkanı.
+  
 - **Seçim ve Geri İşlemleri:**  
-  Tek bir buton, menüde seçim yapmanızı ve geri dönüş işlemlerini gerçekleştirmenizi sağlayarak, sistemde sadelik ve pratiklik sunar.
+  Tek buton kullanımıyla basit seçim ve geri dönüş işlemleri sağlanmaktadır.
 
 - **WiFi Yönetimi:**  
-  İlk açılışta cihaz hotspot moduna geçer. Dahili WiFi Manager ile cihazınızı yerel WiFi ağına kolayca bağlayabilirsiniz.
+  İlk başlatmada cihaz hotspot moduna geçer; dahili WiFi Manager sayesinde yerel ağa hızlıca bağlanabilirsiniz.
 
 - **Zaman Senkronizasyonu:**  
-  DS1307 RTC modülü, sistemin doğru saat bilgisiyle çalışmasını garanti eder.
+  DS1307 RTC modülü ile sistem saati otomatik olarak ayarlanır.
 
 ## Kurulum ve Yapılandırma
 
 1. **Donanım Bağlantıları:**  
-   Yukarıdaki tabloyu referans alarak tüm bileşenlerinizi NodeMCU’ya bağlayın.
+   Yukarıdaki tablodaki bağlantılara uygun olarak tüm bileşenleri NodeMCU’ya bağlayın.
 
 2. **Kod Yükleme:**  
-   Gerekli kütüphaneleri (örn. `LiquidCrystal_I2C`, `RTClib`, `Adafruit_ADXL345`, `DHT`, `OneWire`, `DallasTemperature`, `WiFiManager`) içeren Arduino IDE projesini oluşturun. Kod, tüm bileşenlerin entegre çalışmasını sağlayacak şekilde yazılmıştır.
+   Gerekli kütüphaneler (`LiquidCrystal_I2C`, `RTClib`, `Adafruit_ADXL345`, `DHT`, `OneWire`, `DallasTemperature`, `WiFiManager`) kullanılarak oluşturulan Arduino projesini yükleyin. Bu sayede tüm bileşenler uyum içinde çalışacaktır.
 
-3. **İlk Açılış ve WiFi Konfigürasyonu:**  
-   NodeMCU’yu ilk başlattığınızda cihaz hotspot modunda çalışacaktır. WiFi Manager arayüzüne bağlanarak, cihazınızı yerel ağınıza entegre edin.
+3. **İlk Açılış ve WiFi Ayarları:**  
+   NodeMCU başlatıldığında cihaz hotspot modunda açılır. WiFi Manager arayüzüne bağlanıp, WiFi ayarlarını yapmayı unutmayın.
 
 4. **Test ve Kalibrasyon:**  
-   Menü navigasyonunu, sensör okumalarını ve diğer fonksiyonları test ederek sistemin sorunsuz çalıştığından emin olun.
+   Menü navigasyonu, sensör okumaları ve diğer fonksiyonları test ederek sistemin sorunsuz çalıştığından emin olun.
 
 ## Notlar ve İpuçları
 
 - **Güç ve Voltaj Yönetimi:**  
-  I2C cihazlarınızın çalışma voltajlarına dikkat edin. NodeMCU 3.3V çıkış verir; modüllerinizin uyumlu olması ya da uygun seviye dönüştürücü kullanmanız önemlidir.
+  I2C cihazların çalışma voltajlarına dikkat edin. NodeMCU 3.3V çıkış verdiği için modüllerin uyumlu olması veya uygun seviye dönüştürücü kullanılması gerekebilir.
 
-- **Yenilikçi Tasarım:**  
-  Basit ama etkili bir arayüz, minimalizm ve fonksiyonellik ön planda tutulmuştur. Bu, projenin uzun ömürlü ve dayanıklı olmasını sağlar.
+- **Özgün Tasarım:**  
+  Projenin temelinde basitlikle birlikte işlevsellik yatar. Sistemi uzun ömürlü ve güvenilir kılmak için sade ama etkili çözümler tercih edilmiştir.
 
 - **Sorun Giderme:**  
-  Herhangi bir bileşen çalışmıyorsa, bağlantıları, güç beslemesini ve kütüphane uyumluluklarını kontrol edin.
+  Herhangi bir bileşen çalışmadığında bağlantıları, güç kaynaklarını ve kütüphane uyumluluklarını yeniden gözden geçirin.
 
 - **Güvenilirlik:**  
-  Aracınızın içindeki elektronik sistemlerde sağlam ve stabil bir yapı, uzun vadeli kullanımda başarının anahtarıdır. Tasarımda sade, pratik ve ileri görüşlü yaklaşımlar benimsendi.
+  Aracınızın içerisindeki elektronik sistemlerin stabil çalışması uzun vadeli başarının anahtarıdır.
 
