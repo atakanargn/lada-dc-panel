@@ -95,6 +95,8 @@ Proje, araç içerisindeki çeşitli sensör verilerini okur ve LCD ekran üzeri
 
 ## Proje Resimleri
 
+Bu resimler, projenin ilk prototip aşamasını temsil etmektedir. İlerleyen süreçte, entegrasyon seçenekleri, kullanım düzeni ve performans iyileştirmeleri üzerine çalışmalar yapılacaktır.
+
 ![0.jpeg](images/0.jpeg)
 ![1.jpeg](images/1.jpeg)
 ![2.jpeg](images/2.jpeg)
