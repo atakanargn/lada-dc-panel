@@ -1,6 +1,6 @@
 # LADA DC PANEL
 
-Bu proje, Lada Samara aracım için geliştirdiğim kontrol sistemidir. Farklı I2C cihazlarını, sensörleri, encoder tabanlı kullanıcı arayüzünü ve ek çıkış bileşenlerini (buzzer, röle) tek çatı altında toplayarak, aracın veri okuma, kontrol ve alarm sistemlerini entegre bir şekilde sunmayı amaçlamaktadır.
+Bu proje, Lada Samara araç için geliştirdiğimiz kontrol sistemidir. Farklı I2C cihazlarını, sensörleri, son kullanıcı odaklı kullanıcı arayüzünü ve ek çıkış bileşenlerini (buzzer, röle) tek çatı altında toplayarak, aracın veri okuma, kontrol ve alarm sistemlerini entegre bir şekilde sunmayı amaçlamaktadır.
 
 ## İçindekiler
 
@@ -18,8 +18,7 @@ Bu proje, Lada Samara aracım için geliştirdiğim kontrol sistemidir. Farklı 
   - 16x2 LCD ekran, DS1307 RTC ve ADXL345 ivmeölçerin aynı I2C hattında çalışması.
 - **Sensör Okumaları:**  
   - DHT11 ile sıcaklık ve nem ölçümü.  
-  - DS18B20 ile ortam sıcaklığı ölçümü.  
-  - Su geçirmez sıcaklık sensörü ile su sıcaklığı ölçümü.
+  - Su geçirmez sıcaklık sensörü DS18B20 ile motor su sıcaklığı ölçümü. 
 - **Hareket ve Hız Ölçümü:**  
   - ADXL345 ivmeölçer ile aracın ivme değerleri üzerinden hız tahmini.
 - **Kullanıcı Arayüzü:**  
@@ -29,6 +28,7 @@ Bu proje, Lada Samara aracım için geliştirdiğim kontrol sistemidir. Farklı 
   - Buzzer ile uyarı sinyali.
 - **WiFi Yönetimi:**  
   - WiFiManager ile hotspot üzerinden konfigürasyon.
+  - Şuan sadece kablosuz üzerinden yazılım atmak için kullanılıyor. (Örneğin ileride eklenebilecek bir ekran üzeirnden, aracınıza bindiğinizde telefonunuzdan internet paylaşıp cihaz üzerinde hava durumu verilerini güncelleyebilirsiniz.)
 - **Zaman Yönetimi:**  
   - DS1307 RTC ile otomatik saat senkronizasyonu.
 
@@ -65,8 +65,8 @@ Bu proje, Lada Samara aracım için geliştirdiğim kontrol sistemidir. Farklı 
 ## Çalışma Mantığı
 
 Proje, araç içerisindeki çeşitli sensör verilerini okur ve LCD ekran üzerinde görsel olarak sunar.  
-- I2C üzerinden bağlı cihazlar (LCD, RTC, ADXL345) tek hat üzerinde haberleşirken, DHT11 ve DS18B20 ile ortamın sıcaklık, nem gibi değerleri ölçülür.  
-- Su sıcaklık sensörü bağımsız olarak DS18B20 protokolü ile veri sağlar.  
+- I2C üzerinden bağlı cihazlar (LCD, RTC, ADXL345) tek hat üzerinde haberleşirken, DHT11 ile ortamın sıcaklık, nem gibi değerleri ölçülür.  
+- Su sıcaklık sensörü bağımsız olarak OneWire protokolü ile veri sağlar.  
 - Rotary encoder kullanıcının menüde gezinmesini sağlar; basma ve döndürme hareketleriyle farklı ayarlara erişim mümkün olur.  
 - Röle ve buzzer aracılığıyla alınan sensör verileri doğrultusunda otomatik veya manuel kontrol gerçekleştirilmektedir.  
 - WiFiManager sayesinde, ilk başlatmada hotspot üzerinden ağa bağlanma imkanı sunulmaktadır.
@@ -80,23 +80,20 @@ Proje, araç içerisindeki çeşitli sensör verilerini okur ve LCD ekran üzeri
    Gerekli kütüphaneler (`LiquidCrystal_I2C`, `RTClib`, `Adafruit_ADXL345`, `DHT`, `OneWire`, `DallasTemperature`, `WiFiManager`) kullanılarak oluşturulan Arduino projesini NodeMCU’ya yükleyin.
 
 3. **İlk Açılış ve WiFi Ayarları:**  
-   Cihaz ilk başlatıldığında hotspot modunda çalışır. WiFiManager arayüzüne bağlanıp, WiFi ayarlarınızı yapın.
-
+   **(v0.2)**
+   Cihaz ilk başlatıldığında, başlangıçta 3 saniyelik süre boyunca butona basılı tutulursa WiFi Manager modu başlatılır.
+   Wifi Adı : "Kerim's Lada" | Şifre :  "k3r1mL4dA" 
+   Bu default değerleri kodu yüklemeden önce kendinize göre düzenleyebilirsiniz.
+   (hotspot açılır, 5 dakika içerisinde yazılım güncellemesi yapılabilir)
+   **(v0.2)**
+   Mevcut yazılımda kablosuz ağı kullanan bir özellik bulunmamaktadır.  
+   Eğer 3 saniye süresi içerisinde butona basılı tutulmazsa, normal modda başlatılır.  
+   
+   
 4. **Test ve Kalibrasyon:**  
    Menü navigasyonu, sensör okumaları ve diğer fonksiyonları kontrol ederek sistemin hatasız çalıştığına emin olun.
 
-## Notlar ve İpuçları
-
-- **Güç Yönetimi:**  
-  Tüm cihazların güç gereksinimlerini göz önünde bulundurun. NodeMCU 3.3V çıkışı kullanıldığı için bazı modüller ek seviye dönüştürücü gerektirebilir.
-- **I2C Hattı:**  
-  I2C cihazların pull-up dirençlerine dikkat edin.
-- **Düzenli Kalibrasyon:**  
-  Sensör ve kontrol cihazlarının doğru çalışabilmesi için periyodik kalibrasyon yapılması önerilir.
-
-## Resim Galerisi
-
-Aşağıdaki resimler, projede kullanılan bileşenlerin genel görünümünü göstermektedir:
+## Proje Resimleri
 
 ![0.jpeg](images/0.jpeg)
 ![1.jpeg](images/1.jpeg)

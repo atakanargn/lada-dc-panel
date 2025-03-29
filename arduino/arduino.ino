@@ -144,6 +144,7 @@ void handleVeriGuncelle();
 
 void setup() {
   Serial.begin(115200);
+  Serial.println("Versiyon: v0.2"); // v0.2 eklendi
   Serial.println("Proje Baslatiliyor: Ortam, Tarih/Saat, ADXL345, Role, Ayar Menusu, Arka Isik");
   
   lcd.init();
@@ -164,24 +165,40 @@ void setup() {
   lcd.print("Kapali");
   delay(1000);
   
-  WiFi.mode(WIFI_STA);
-  pinMode(ENCODER_SW, INPUT_PULLUP);
-  WiFiManager wifiManager;
-  wifiManager.setConfigPortalTimeout(30); // zaman aşımı 30 saniye
-  lcd.clear();
-  lcd.setCursor(0, 0);
-  lcd.print("Wireless islemleri");
-  unsigned long startTime = millis();
-  bool wifiConnected = false;
-  int spinnerIndex = 0;
-  char spinnerChars[] = "-\\|/";
-  while ((millis() - startTime) < 30000 && !wifiConnected) { // 30 saniye timeout
-      if(digitalRead(ENCODER_SW) == LOW) {
-          lcd.clear();
-          lcd.setCursor(0, 0);
-          lcd.print("Wifi iptal");
-          delay(1000);
-          break;
+  // Yeni: Hoşgeldiniz ve geri sayım ekranı
+  bool wifiUpdateMode = false;
+  for (int i = 3; i >= 0; i--) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Hosgeldiniz");
+    lcd.setCursor(0, 1);
+    lcd.print("Geri sayim: ");
+    lcd.print(i);
+    delay(1000);
+    if (digitalRead(ENCODER_SW) == LOW) {
+      wifiUpdateMode = true;
+    }
+  }
+  
+  if (wifiUpdateMode) {
+    WiFi.mode(WIFI_STA);
+    pinMode(ENCODER_SW, INPUT_PULLUP);
+    WiFiManager wifiManager;
+    wifiManager.setConfigPortalTimeout(300); // 5 dakika timeout
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Wireless islemleri");
+    unsigned long startTime = millis();
+    bool wifiConnected = false;
+    int spinnerIndex = 0;
+    char spinnerChars[] = "-\\|/";
+    while ((millis() - startTime) < 300000 && !wifiConnected) { // 5 dakika
+      if (digitalRead(ENCODER_SW) == LOW) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Wifi iptal");
+        delay(1000);
+        break;
       }
       wifiConnected = wifiManager.autoConnect(wifiSSID, wifiPassword);
       lcd.setCursor(0, 1);
@@ -189,20 +206,24 @@ void setup() {
       lcd.print(spinnerChars[spinnerIndex]);
       spinnerIndex = (spinnerIndex + 1) % 4;
       delay(200);
-  }
-  if (wifiConnected) {
+    }
+    if (wifiConnected) {
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("WiFi Saglandi!");
       delay(1000);
-  } else {
+    } else {
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("WiFi Saglanamadi");
       delay(1000);
+    }
+    WiFi.setAutoReconnect(true);
+  } else {
+    // Normal yüklenme animasyonu
+    splashScreen();
   }
-  WiFi.setAutoReconnect(true);
-
+  
   dht.begin();
   ds18.begin();
   waterSensor.begin();
