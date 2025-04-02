@@ -316,10 +316,10 @@ void loop() {
   if (transitionMode && abs(encoderCount) >= encoderThreshold) {
     if (encoderCount > 0) {
       currentScreen++;
-      if (currentScreen > 8) currentScreen = 0;
+      if (currentScreen > 7) currentScreen = 0;
     } else {
       currentScreen--;
-      if (currentScreen < 0) currentScreen = 8;
+      if (currentScreen < 0) currentScreen = 7;
     }
     transitionMode = false;
     encoderCount = 0;
@@ -588,27 +588,6 @@ void loop() {
           lcd.print(relayConfig.limit, 1);
           lcd.print("C");
         }
-      }
-      break;
-    }
-    case 8: {
-      if (currentMillis - lastWifiUpdate >= 2000) {
-        lastWifiUpdate = currentMillis;
-        displayWifiCredentials = !displayWifiCredentials;
-      }
-      lcd.clear();
-      if (displayWifiCredentials) {
-        lcd.setCursor(0, 0);
-        lcd.print("WiFi: ");
-        lcd.print(wifiSSID);
-        lcd.setCursor(0, 1);
-        lcd.print("Pwd: ");
-        lcd.print(wifiPassword);
-      } else {
-        lcd.setCursor(0, 0);
-        lcd.print("IP Adresi:");
-        lcd.setCursor(0, 1);
-        lcd.print(WiFi.localIP());
       }
       break;
     }
